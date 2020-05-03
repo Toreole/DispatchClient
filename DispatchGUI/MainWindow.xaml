@@ -4,6 +4,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DispatchGUI.MainWindow"
-        Title="DispatchGUI">
-    Welcome to Avalonia!
+        Title="AvaloniaAppTemplate">
+	<StackPanel>
+    <Button Name="TestButton" ClickMode="Press"
+            Width="160" Foreground="White" Background="Red">
+      White text, red background
+    </Button>
+	</StackPanel>
 </Window>
