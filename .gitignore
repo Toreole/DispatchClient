@@ -1,0 +1,5 @@
+#ignore the visual studio garbage
+.vs
+
+#ignore all the debug stuff
+/DispatchGUI/bin/
