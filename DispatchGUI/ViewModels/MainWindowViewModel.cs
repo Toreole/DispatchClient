@@ -6,6 +6,7 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using DispatchGUI.Models;
 using System.Runtime.Serialization;
+using System.Reactive;
 
 namespace DispatchGUI.ViewModels
 {
@@ -16,7 +17,10 @@ namespace DispatchGUI.ViewModels
         public MainWindowViewModel(TodoDatabase db)
         {
             Content = List = new TodoListViewModel(db.GetItems());
+            Test = ReactiveCommand.Create(() => List.Test());
         }
+
+        ReactiveCommand<Unit, Unit> Test { get; }
 
         public ViewModelBase Content
         {
@@ -31,15 +35,13 @@ namespace DispatchGUI.ViewModels
         {
             var vm = new AddItemViewModel();
 
-            Observable.Merge(
-                vm.Ok,
-                vm.Cancel.Select(_ => (TodoItem)null))
+            Observable.Merge(vm.Ok, vm.Cancel.Select(_ => (TodoItem)null))
                 .Take(1)
-                .Subscribe(model =>
+                .Subscribe(todoItem =>
                 {
-                    if (model != null)
+                    if (todoItem != null)
                     {
-                        List.Items.Add(model);
+                        List.Items.Add(todoItem);
                     }
                     Content = List;
                 });
