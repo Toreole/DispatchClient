@@ -49,6 +49,10 @@
             "Avalonia.Desktop": {
               "target": "Package",
               "version": "[0.9.0, )"
+            },
+            "Avalonia.ReactiveUI": {
+              "target": "Package",
+              "version": "[0.9.0, )"
             }
           },
           "imports": [
