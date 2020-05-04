@@ -5,6 +5,7 @@ using System.Text;
 using ReactiveUI;
 using System.Reactive.Linq;
 using DispatchGUI.Models;
+using System.Runtime.Serialization;
 
 namespace DispatchGUI.ViewModels
 {
@@ -23,6 +24,7 @@ namespace DispatchGUI.ViewModels
             private set => this.RaiseAndSetIfChanged(ref content, value);
         }
 
+        [DataMember]
         public TodoListViewModel List { get; }
 
         public void AddItem()

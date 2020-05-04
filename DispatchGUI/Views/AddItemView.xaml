@@ -6,7 +6,7 @@
              x:Class="DispatchGUI.Views.AddItemView">
   <DockPanel>
     <Button DockPanel.Dock="Bottom" Command="{Binding Cancel}">Cancel</Button>
-    <Button DockPanel.Dock="Bottom" Command="{Binding Ok}">OK</Button>
+    <Button DockPanel.Dock="Bottom" Command="{Binding Ok}">Ok</Button>
     <TextBox AcceptsReturn="True"
              Text="{Binding Description}"
              Watermark="Enter your TODO"/>
