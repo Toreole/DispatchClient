@@ -10,7 +10,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="DispatchGUI">
   <Window.Styles>
-    <Style Selector="ContentControl.Console">
+    <Style Selector="TextBox.Console">
       <Setter Property="FontFamily" Value="Consolas"/>
       <Setter Property="Background" Value="#181818"/>
       <Setter Property="Foreground" Value="#ffffff"/>
@@ -21,16 +21,17 @@
         <DockPanel>
           <WrapPanel DockPanel.Dock="Top">
             <Button Height="25" Width="100" Command="{Binding Test}">Test</Button>
-            <Button Height="25" Width="100" Command="{Binding Run}">Dead Button</Button>
+            <Button Height="25" Width="100" Command="{Binding Run}">Run Help</Button>
           </WrapPanel>
           <ContentControl Content="{Binding Content}"></ContentControl>
         </DockPanel>
       </TabItem>
       <TabItem Header="Output">
-        <ContentControl 
+        <TextBox
           Classes="Console"
-          Padding="5"
-          Content="{Binding ConsoleOutputText}" />
+          Padding="4"
+          AcceptsReturn="True"
+          Text="{Binding ConsoleOutputText}" />
       </TabItem>
     </TabControl>
      

@@ -8,6 +8,8 @@ using DispatchGUI.Models;
 using System.Runtime.Serialization;
 using System.Reactive;
 using ReactiveUI;
+using System.IO;
+using System.Diagnostics;
 
 namespace DispatchGUI.ViewModels
 {
@@ -58,7 +60,27 @@ namespace DispatchGUI.ViewModels
         void RunTestClient()
         {
             //TODO: this will run the .bat file eventually.
-            ConsoleOutputText += "Yo";
+            //1. Check for / Setup file.
+            string path = Path.GetFullPath("command.bat");
+            if(!File.Exists(path))
+            {
+                FileStream stream = File.Create(path);
+                byte[] buffer = Encoding.UTF8.GetBytes("dispatch help");
+                stream.Write(buffer, 0, buffer.Length);
+                stream.Flush();
+                stream.Close();
+            }
+            //create the process.
+            Process process = new Process();
+            
+            ProcessStartInfo startInfo = new ProcessStartInfo(path, "");
+            startInfo.RedirectStandardOutput = true;
+            startInfo.UseShellExecute = false;
+            process.StartInfo = startInfo;
+            process.OutputDataReceived += (sender, args) => ConsoleOutputText += $"{args.Data}\n";
+            process.Start();
+            process.BeginOutputReadLine();
+            process.WaitForExit();
         }
 
     }
