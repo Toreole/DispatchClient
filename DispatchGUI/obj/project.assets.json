@@ -8859,11 +8859,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\coding fun lmao\\DispatchClient\\DispatchGUI\\DispatchGUI.csproj",
+      "projectUniqueName": "D:\\ExtraCoding\\DispatchClient\\DispatchGUI\\DispatchGUI.csproj",
       "projectName": "DispatchGUI",
-      "projectPath": "D:\\coding fun lmao\\DispatchClient\\DispatchGUI\\DispatchGUI.csproj",
+      "projectPath": "D:\\ExtraCoding\\DispatchClient\\DispatchGUI\\DispatchGUI.csproj",
       "packagesPath": "C:\\Users\\torbe\\.nuget\\packages\\",
-      "outputPath": "D:\\coding fun lmao\\DispatchClient\\DispatchGUI\\obj\\",
+      "outputPath": "D:\\ExtraCoding\\DispatchClient\\DispatchGUI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

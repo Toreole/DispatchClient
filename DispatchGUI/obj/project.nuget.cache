@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xUpUFmiP8QPtpIizDHeMjWy128xMpddrtgvo0NDdbAtlhhVZHxNXPCaINUv49RmACNLP644rWTvunJr7ZJ3CDA==",
+  "dgSpecHash": "KmgWbf2AdV0frIRVzRIblTT3QH12jFdAIsRWLTDFvJUyjWERmsJnicTSlYBn0OoCMPbFzDVDlilpzizsxpyPiA==",
   "success": true,
-  "projectFilePath": "D:\\coding fun lmao\\DispatchClient\\DispatchGUI\\DispatchGUI.csproj",
+  "projectFilePath": "D:\\ExtraCoding\\DispatchClient\\DispatchGUI\\DispatchGUI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\torbe\\.nuget\\packages\\avalonia\\0.9.0\\avalonia.0.9.0.nupkg.sha512",
     "C:\\Users\\torbe\\.nuget\\packages\\avalonia.desktop\\0.9.0\\avalonia.desktop.0.9.0.nupkg.sha512",

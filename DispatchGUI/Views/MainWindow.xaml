@@ -4,11 +4,12 @@
         xmlns:views="clr-namespace:DispatchGUI.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="600"
-        Width="350" Height="600"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="500"
+        Width="700" Height="500"
         x:Class="DispatchGUI.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="DispatchGUI">
+  <!-- Define the style -->
   <Window.Styles>
     <Style Selector="TextBox.Console">
       <Setter Property="FontFamily" Value="Consolas"/>
@@ -16,7 +17,9 @@
       <Setter Property="Foreground" Value="#ffffff"/>
     </Style>
   </Window.Styles>
+  <!-- Set up different tabs -->
     <TabControl>
+      <!-- "Main" Tab: controls -->
       <TabItem Header="Control" VerticalContentAlignment="Center">
         <DockPanel>
           <WrapPanel DockPanel.Dock="Top">
@@ -26,12 +29,17 @@
           <ContentControl Content="{Binding Content}"></ContentControl>
         </DockPanel>
       </TabItem>
+      <!-- Console Tab: displays the output of the commands. -->
       <TabItem Header="Output">
         <TextBox
           Classes="Console"
-          Padding="4"
-          AcceptsReturn="True"
+          Padding="3"
+          IsReadOnly="True"
           Text="{Binding ConsoleOutputText}" />
+      </TabItem>
+      <TabItem Header="List">
+        <!-- This can be filled with custom content -->
+        Hello there
       </TabItem>
     </TabControl>
      
