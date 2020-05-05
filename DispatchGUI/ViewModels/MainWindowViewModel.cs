@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using DispatchGUI.Models;
 using System.Runtime.Serialization;
 using System.Reactive;
+using ReactiveUI;
 
 namespace DispatchGUI.ViewModels
 {
@@ -18,9 +19,11 @@ namespace DispatchGUI.ViewModels
         {
             Content = List = new TodoListViewModel(db.GetItems());
             Test = ReactiveCommand.Create(() => List.Test());
+            Run = ReactiveCommand.Create(() => RunTestClient());
         }
 
         ReactiveCommand<Unit, Unit> Test { get; }
+        ReactiveCommand<Unit, Unit> Run { get; }
 
         public ViewModelBase Content
         {
@@ -30,6 +33,9 @@ namespace DispatchGUI.ViewModels
 
         [DataMember]
         public TodoListViewModel List { get; }
+
+        public string ConsoleOutputText { get => outputText; set => this.RaiseAndSetIfChanged(ref outputText, value); } 
+        private string outputText = "Hello";
 
         public void AddItem()
         {
@@ -47,6 +53,12 @@ namespace DispatchGUI.ViewModels
                 });
 
             Content = vm;
+        }
+
+        void RunTestClient()
+        {
+            //TODO: this will run the .bat file eventually.
+            ConsoleOutputText += "Yo";
         }
 
     }

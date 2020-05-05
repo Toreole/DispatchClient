@@ -9,19 +9,28 @@
         x:Class="DispatchGUI.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="DispatchGUI">
-  
+  <Window.Styles>
+    <Style Selector="ContentControl.Console">
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="Background" Value="#181818"/>
+      <Setter Property="Foreground" Value="#ffffff"/>
+    </Style>
+  </Window.Styles>
     <TabControl>
-      <TabItem Header="Default" VerticalContentAlignment="Center">
+      <TabItem Header="Control" VerticalContentAlignment="Center">
         <DockPanel>
           <WrapPanel DockPanel.Dock="Top">
             <Button Height="25" Width="100" Command="{Binding Test}">Test</Button>
-            <Button Height="25" Width="100">Dead Button</Button>
+            <Button Height="25" Width="100" Command="{Binding Run}">Dead Button</Button>
           </WrapPanel>
           <ContentControl Content="{Binding Content}"></ContentControl>
         </DockPanel>
       </TabItem>
-      <TabItem Header="B">
-        
+      <TabItem Header="Output">
+        <ContentControl 
+          Classes="Console"
+          Padding="5"
+          Content="{Binding ConsoleOutputText}" />
       </TabItem>
     </TabControl>
      
