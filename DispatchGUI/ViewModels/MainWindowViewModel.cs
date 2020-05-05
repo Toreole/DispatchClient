@@ -1,15 +1,13 @@
-﻿using DispatchGUI.Services;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.IO;
 using System.Text;
-using ReactiveUI;
-using System.Reactive.Linq;
-using DispatchGUI.Models;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Reactive;
+using System.Reactive.Linq;
 using ReactiveUI;
-using System.IO;
-using System.Diagnostics;
+using DispatchGUI.Models;
+using DispatchGUI.Services;
 
 namespace DispatchGUI.ViewModels
 {
@@ -82,6 +80,5 @@ namespace DispatchGUI.ViewModels
             process.BeginOutputReadLine();
             process.WaitForExit();
         }
-
     }
 }

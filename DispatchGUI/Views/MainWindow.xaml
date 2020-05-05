@@ -26,7 +26,6 @@
             <Button Height="25" Width="100" Command="{Binding Test}">Test</Button>
             <Button Height="25" Width="100" Command="{Binding Run}">Run Help</Button>
           </WrapPanel>
-          <ContentControl Content="{Binding Content}"></ContentControl>
         </DockPanel>
       </TabItem>
       <!-- Console Tab: displays the output of the commands. -->
@@ -38,8 +37,8 @@
           Text="{Binding ConsoleOutputText}" />
       </TabItem>
       <TabItem Header="List">
-        <!-- This can be filled with custom content -->
-        Hello there
+        <!-- The todo list should appear in this tab now. -->
+        <ContentControl Content="{Binding Content}"></ContentControl>
       </TabItem>
     </TabControl>
      
