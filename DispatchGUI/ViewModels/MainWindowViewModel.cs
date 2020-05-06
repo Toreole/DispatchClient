@@ -6,20 +6,31 @@ using System.Runtime.Serialization;
 using System.Reactive;
 using System.Reactive.Linq;
 using ReactiveUI;
-using DispatchGUI.Models;
-using DispatchGUI.Services;
 
 namespace DispatchGUI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
         ViewModelBase content;
+        string workingDirectory;
 
-        public MainWindowViewModel(TodoDatabase db)
+        public MainWindowViewModel()
         {
-            Content = List = new TodoListViewModel(db.GetItems());
-            Test = ReactiveCommand.Create(() => List.Test());
             Run = ReactiveCommand.Create(() => RunTestClient());
+        }
+
+        public static MainWindowViewModel FromFile(string filePath)
+        {
+            MainWindowViewModel viewModel = new MainWindowViewModel();
+            viewModel.workingDirectory = Path.GetDirectoryName(filePath);
+            return viewModel;
+        }
+
+        public static MainWindowViewModel FromDirectory(string directoryPath)
+        {
+            MainWindowViewModel viewModel = new MainWindowViewModel();
+            viewModel.workingDirectory = directoryPath;
+            return viewModel;
         }
 
         ReactiveCommand<Unit, Unit> Test { get; }
@@ -31,29 +42,8 @@ namespace DispatchGUI.ViewModels
             private set => this.RaiseAndSetIfChanged(ref content, value);
         }
 
-        [DataMember]
-        public TodoListViewModel List { get; }
-
         public string ConsoleOutputText { get => outputText; set => this.RaiseAndSetIfChanged(ref outputText, value); } 
         private string outputText = "Hello";
-
-        public void AddItem()
-        {
-            var vm = new AddItemViewModel();
-
-            Observable.Merge(vm.Ok, vm.Cancel.Select(_ => (TodoItem)null))
-                .Take(1)
-                .Subscribe(todoItem =>
-                {
-                    if (todoItem != null)
-                    {
-                        List.Items.Add(todoItem);
-                    }
-                    Content = List;
-                });
-
-            Content = vm;
-        }
 
         void RunTestClient()
         {
