@@ -6,6 +6,8 @@ using System.Runtime.Serialization;
 using System.Reactive;
 using System.Reactive.Linq;
 using ReactiveUI;
+using System.Drawing;
+using DispatchGUI.Services;
 
 namespace DispatchGUI.ViewModels
 {
@@ -13,24 +15,46 @@ namespace DispatchGUI.ViewModels
     {
         ViewModelBase content;
         string workingDirectory;
+        string workingProjectFile;
+
+        public ConfigViewModel ConfigView { get; private set; }
 
         public MainWindowViewModel()
         {
             Run = ReactiveCommand.Create(() => RunTestClient());
+            ConfigView = new ConfigViewModel();
         }
 
-        public static MainWindowViewModel FromFile(string filePath)
+        //existing file, initialize.
+        public MainWindowViewModel FromFile(string filePath)
         {
-            MainWindowViewModel viewModel = new MainWindowViewModel();
-            viewModel.workingDirectory = Path.GetDirectoryName(filePath);
-            return viewModel;
+            this.workingProjectFile = filePath;
+            this.workingDirectory = System.IO.Path.GetDirectoryName(filePath);
+            ConfigHost.Reload(filePath);
+            return this;
         }
-
-        public static MainWindowViewModel FromDirectory(string directoryPath)
+        //only got the path: 1. search for file, if none found create new.
+        public MainWindowViewModel FromDirectory(string path)
         {
-            MainWindowViewModel viewModel = new MainWindowViewModel();
-            viewModel.workingDirectory = directoryPath;
-            return viewModel;
+            this.workingDirectory = path;
+            this.workingProjectFile = ""; //mark empty to begin with.
+
+            foreach(string file in Directory.GetFiles(path + "/"))
+            {
+                if(file.EndsWith(".disgui")) //this is a disgui file.
+                {
+                    this.workingProjectFile = file;
+                    break;
+                }
+            }
+
+            //no file could be found, create a new one
+            if(string.IsNullOrEmpty(this.workingProjectFile))
+            {
+                this.workingProjectFile = ConfigHost.CreateNewIn(path);
+            }
+
+            return this;
         }
 
         ReactiveCommand<Unit, Unit> Test { get; }

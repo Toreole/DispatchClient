@@ -35,9 +35,9 @@
           IsReadOnly="True"
           Text="{Binding ConsoleOutputText}" />
       </TabItem>
-      <TabItem Header="List">
+      <TabItem Header="Config">
         <!-- The todo list should appear in this tab now. -->
-        <ContentControl Content="{Binding Content}"></ContentControl>
+        <ContentControl Content="{Binding ConfigView}"></ContentControl>
       </TabItem>
     </TabControl>
      

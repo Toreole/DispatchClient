@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using DispatchGUI.ViewModels;
 using DispatchGUI.Views;
+using System.IO;
 
 namespace DispatchGUI
 {
@@ -17,30 +18,35 @@ namespace DispatchGUI
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                MainWindowViewModel mainWindowViewModel;
+                MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
                 //filter the command line arguments
                 var commandArguments = System.Environment.GetCommandLineArgs();
                 if (commandArguments.Length > 0)
                 {
-                    //there is an argument, currently that should only be the case if it gets passed a path!
-                    string path = commandArguments[0];
-                    if (path.EndsWith(".disgui"))
+                    foreach (string arg in commandArguments)
                     {
-                        //identified as file
-                        mainWindowViewModel = MainWindowViewModel.FromFile(path);
-                    }
-                    else
-                    {
-                        //is a directory.
-                        mainWindowViewModel = MainWindowViewModel.FromDirectory(path);
+                        if (!Path.IsPathRooted(arg)) //skip arguments that arent paths.
+                            continue;
+#nullable enable
+                        string? extension = Path.GetExtension(arg);
+                        if (extension != ".disgui")
+                            if (extension != null)
+                                continue;
+#nullable disable
+                            //there is an argument, currently that should only be the case if it gets passed a path!
+                            string path = commandArguments[0];
+                        if (path.EndsWith(".disgui"))  //identified as file
+                            path = Path.GetDirectoryName(path);
+
+                        //always load from the directory, even when its a bit slower than going directly from the file.
+                        mainWindowViewModel.FromDirectory(path);
                     }
                 }
-                else
-                    mainWindowViewModel = new MainWindowViewModel();
+
                 //make the main window.
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = mainWindowViewModel
                 };
             }
 
