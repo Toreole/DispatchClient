@@ -18,12 +18,15 @@ namespace DispatchGUI.ViewModels
         string workingProjectFile;
 
         public ConfigViewModel ConfigView { get; private set; }
+        public ReactiveCommand<Unit, Unit> GenerateConfigJson { get; }
+
 
         #region Constructors_Initialization
         public MainWindowViewModel()
         {
-            Run = ReactiveCommand.Create(() => { Task.Run(RunTestClient); });
+            ConfigHost.Empty();
             ConfigView = new ConfigViewModel();
+            Run = ReactiveCommand.Create(() => { Task.Run(RunTestClient); });
         }
 
         //existing file, initialize.
@@ -60,6 +63,13 @@ namespace DispatchGUI.ViewModels
             }
 
             return this;
+        }
+
+        public void Initialize()
+        {
+            if (ConfigHost.ActiveConfig == null)
+                return;
+            ConfigView.AppID = ConfigHost.ActiveConfig.applicationID;
         }
         #endregion
 

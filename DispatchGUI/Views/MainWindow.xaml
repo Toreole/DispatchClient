@@ -35,9 +35,12 @@
           IsReadOnly="True"
           Text="{Binding ConsoleOutputText}" />
       </TabItem>
-      <TabItem Header="Config">
-        <!-- The todo list should appear in this tab now. -->
-        <ContentControl Content="{Binding ConfigView}"></ContentControl>
+      <TabItem Header="Project">
+        <!-- The Config of the project. -->
+        <views:ConfigView/>
+      </TabItem>
+      <TabItem Header="Dispatch Config">
+        
       </TabItem>
     </TabControl>
      

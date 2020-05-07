@@ -13,7 +13,10 @@ namespace DispatchGUI.Services
         /// </summary>
         public static string CreateNewIn(string directory)
         {
-            ActiveConfig = new ProjectConfig();
+            ActiveConfig = new ProjectConfig
+            {
+                dispatchConfigLocation = Path.Combine(directory, "config.json")
+            };
             string filePath = Path.Combine(directory, "newDispatchGUIConfig.disgui");
 
             //TODO: Create the file in the filepath.
@@ -50,6 +53,14 @@ namespace DispatchGUI.Services
             ActiveConfig = serializer.Deserialize(reader, typeof(ProjectConfig)) as ProjectConfig;
             reader.Dispose();
             stream.Dispose();
+        }
+
+        /// <summary>
+        /// Needed for debugging.
+        /// </summary>
+        public static void Empty()
+        {
+            ActiveConfig = new ProjectConfig();
         }
     }
 }

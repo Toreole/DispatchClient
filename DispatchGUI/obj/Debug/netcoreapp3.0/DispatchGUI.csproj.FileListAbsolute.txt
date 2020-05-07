@@ -235,7 +235,6 @@ D:\ExtraCoding\DispatchClient\DispatchGUI\bin\Debug\netcoreapp3.0\runtimes\win-x
 D:\ExtraCoding\DispatchClient\DispatchGUI\bin\Debug\netcoreapp3.0\runtimes\win-x86\native\libSkiaSharp.dll
 D:\ExtraCoding\DispatchClient\DispatchGUI\bin\Debug\netcoreapp3.0\runtimes\unix\lib\netcoreapp2.0\System.Drawing.Common.dll
 D:\ExtraCoding\DispatchClient\DispatchGUI\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp2.0\System.Drawing.Common.dll
-D:\ExtraCoding\DispatchClient\DispatchGUI\obj\Debug\netcoreapp3.0\DispatchGUI.csprojAssemblyReference.cache
 D:\ExtraCoding\DispatchClient\DispatchGUI\obj\Debug\netcoreapp3.0\DispatchGUI.AssemblyInfoInputs.cache
 D:\ExtraCoding\DispatchClient\DispatchGUI\obj\Debug\netcoreapp3.0\DispatchGUI.AssemblyInfo.cs
 D:\ExtraCoding\DispatchClient\DispatchGUI\obj\Debug\netcoreapp3.0\DispatchGUI.csproj.CopyComplete
@@ -244,3 +243,4 @@ D:\ExtraCoding\DispatchClient\DispatchGUI\obj\Debug\netcoreapp3.0\DispatchGUI.pd
 D:\ExtraCoding\DispatchClient\DispatchGUI\obj\Debug\netcoreapp3.0\DispatchGUI.genruntimeconfig.cache
 D:\ExtraCoding\DispatchClient\DispatchGUI\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
 D:\ExtraCoding\DispatchClient\DispatchGUI\obj\Debug\netcoreapp3.0\DispatchGUI.csproj.CoreCompileInputs.cache
+D:\ExtraCoding\DispatchClient\DispatchGUI\obj\Debug\netcoreapp3.0\DispatchGUI.csprojAssemblyReference.cache
