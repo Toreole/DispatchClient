@@ -26,7 +26,6 @@ namespace DispatchGUI.Views
         {
             AvaloniaXamlLoader.Load(this);
 
-
             appID_Input = this.FindControl<TextBox>("AppID");
             appID_Input.LostFocus += UpdateAppId;
 
