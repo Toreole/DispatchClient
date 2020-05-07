@@ -9,7 +9,7 @@ namespace DispatchGUI.Models
     {
         //TODO: the project config holds a bunch of information about the project itself.
         //1. the APP ID assigned by discord
-        public string applicationID;
+        public ulong applicationID;
         //2. the IDs (names if possible) of the branches
         public DispatchBranch[] branches;
         //3. the IDs of the builds (dates of them?)
@@ -17,18 +17,19 @@ namespace DispatchGUI.Models
         public Dictionary<DispatchBranch, DispatchBuild[]> buildsByBranch;
 
         //4. the config.json location for dispatch. (absolute path)
+        public string dispatchConfigLocation;
     }
 
     [Serializable]
     public class DispatchBranch
     {
-        public string branchID;
+        public ulong branchID;
         public string name;
     }
 
     public class DispatchBuild
     {
-        public string buildID;
+        public ulong buildID;
         public string date;
     }
 }

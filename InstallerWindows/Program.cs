@@ -5,6 +5,7 @@ using System.Net;
 using System;
 using System.ComponentModel;
 using Microsoft.Win32;
+using System.Threading.Tasks;
 
 namespace InstallerWindows
 {
@@ -14,12 +15,13 @@ namespace InstallerWindows
         static void Main()
         {
             Program program = new Program();
-            program.Install();
-            //TODO: option to uninstall.
+            //TODO: option to uninstall?
+            program.SetupInstall();
 
-            Console.WriteLine("Setup will exit now.");
+            Console.WriteLine("Press any key to finalize setup.");
             Console.ReadKey();
         }
+
         //"PLACEHOLDER_URL/RELEASE_FILE"
         readonly Uri downloadUri = new Uri("https://github.com/Toreole/DispatchClient/releases/latest/app.zip");
         readonly string tempFile = "TEMP_DOWNLOAD.zip";
@@ -29,6 +31,73 @@ namespace InstallerWindows
         string installationPath;
         string tempFilePath;
         string exePath;
+
+        string dispatchExe;
+
+        public void SetupInstall()
+        {
+            Console.WriteLine("Also install Dispatch from dl-dispatch.discordapp.com? (y/n)");
+            for (; ; )
+            {
+                var result = Console.ReadKey();
+                if (result.Key == ConsoleKey.Y)
+                {
+                    GetDispatchAndInstall();
+                    break;
+                }
+                else if (result.Key == ConsoleKey.N)
+                {
+                    Install();
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Download the win64 Dispatch.exe from discord and add it to the environment PATH
+        /// </summary>
+        void GetDispatchAndInstall()
+        {
+            //Select the folder to install dispatch in.
+            FolderBrowserDialog dispFolder = new FolderBrowserDialog();
+            dispFolder.Description = "Select the folder to install Dispatch by Discord";
+            dispFolder.ShowNewFolderButton = true;
+            dispFolder.RootFolder = Environment.SpecialFolder.MyComputer;
+
+            var result = dispFolder.ShowDialog();
+            //when the result is OK, start the download async.
+            if(result == DialogResult.OK)
+            {
+                DownloadDispatch(dispFolder.SelectedPath);
+                AddDispatchToPATH();
+                dispFolder.Dispose();
+                Install();
+            }
+            else
+            {
+                dispFolder.Dispose();
+                Console.WriteLine("Failed getting a valid folder.");
+            }
+        }
+
+        void DownloadDispatch(string installPath)
+        {
+            Console.WriteLine("Downloading Dispatch...");
+            //save the path.
+            this.dispatchExe = Path.Combine(installPath, "dispatch.exe");
+            //download the thing.
+            WebClient dispDownload = new WebClient();
+            //downloads the latest win64 dispatch executable from discord.
+            dispDownload.DownloadFile("https://dl-dispatch.discordapp.net/download/win64", this.dispatchExe);
+            dispDownload.Dispose();
+        }
+
+        void AddDispatchToPATH()
+        {
+            string pathVariable = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
+            pathVariable = $"{pathVariable};{dispatchExe};";
+            Environment.SetEnvironmentVariable("Path", pathVariable, EnvironmentVariableTarget.User);
+        }
 
         public void Install()
         {
@@ -67,10 +136,16 @@ namespace InstallerWindows
         void OnDownloadComplete(object sender, AsyncCompletedEventArgs e)
         {
             this.client.Dispose();
+            progressBar.Dispose();
             //Unzip the downloaded release into the installation path.
             ZipFile.ExtractToDirectory(this.tempFilePath, this.installationPath);
             this.exePath = Path.Combine(installationPath, "DispatchGUI.exe");
-            
+
+            AddDisGuiToRegistry();
+        }
+
+        void AddDisGuiToRegistry()
+        {
             //Setup the registry stuff: context menu.
             //Add the Entry for the context menu on background
             Registry.SetValue(@"HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\DispatchGUI", "", "Open DispatchGUI here");
@@ -94,7 +169,6 @@ namespace InstallerWindows
             //SetValue HKEY_CLASSES_ROOT\<FileTypeName>\shell\open\command Name:"" Value:"\"<pathToExe>\" \"%1\""
             Registry.SetValue(@"HKEY_CLASSES_ROOT\disguiproj\shell\open\command", valueName: "", value: $"\"{this.exePath}\", \"%1\"");
 
-            progressBar.Dispose();
         }
     }
 }
