@@ -64,11 +64,20 @@ namespace DispatchGUI.ViewModels
             }
         }
 
+        //This enables / disables the "fetch branch data" button. very important.
+        bool canGetBranches = false;
+        public bool CanGetBranches
+        {
+            get => canGetBranches;
+            set => this.RaiseAndSetIfChanged(ref canGetBranches, value);
+        }
+
         void FullValidateId(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
                 AppIdBorderBrush = redBrush;
+                CanGetBranches = false;
                 return;
             }
             if (Regex.IsMatch(id, "^[0-9]*$", RegexOptions.None))
@@ -78,11 +87,13 @@ namespace DispatchGUI.ViewModels
                     //this is a valid appID!
                     ConfigHost.ActiveConfig.applicationID = id;
                     AppIdBorderBrush = greenBrush;
+                    CanGetBranches = true;
                     return;
                 }
             }
             AppIdBorderBrush = redBrush;
             //AppID = ConfigHost.ActiveConfig.applicationID;
+            CanGetBranches = false;
             return;
         }
 
@@ -113,7 +124,87 @@ namespace DispatchGUI.ViewModels
 
         public void Save()
         {
-            ConfigHost.Save(ConfigHost.workingProjectFile);
+            ConfigHost.Save(Path.GetFullPath("test.disgui"));
+            AppIdBorderBrush = new SolidColorBrush(Color.FromRgb(100, 100, 250));
+        }
+
+        public void GetBranchesAndBuilds()
+        {
+            GetBranches();
+            GetBuilds();
+        }
+
+        //TODO: scanning for the ApplicationID as the first string in a row might be better.
+        /// <summary>
+        /// Gets all the branches by name and ID.
+        /// </summary>
+        public void GetBranches()
+        {
+            string rawData = CmdService.ExecuteDispatchCommand($"branch list {ConfigHost.ActiveConfig.applicationID}");
+            string[] chunks = rawData.Split('|');
+
+            //wipe all previous branch data.
+            ProjectConfig config = ConfigHost.ActiveConfig;
+            config.Branches.Clear();
+
+            for(int i = 1; i < chunks.Length; ) //scan all the data.
+            {
+                string entry = chunks[^i].Trim();
+                //skip empty entries
+                if(string.IsNullOrWhiteSpace(entry) || string.IsNullOrEmpty(entry) || !entry.StartsWith("20"))
+                {
+                    i++;
+                    continue;
+                }
+                var currentBranch = new DispatchBranch();
+
+                //yuuup its hardcoded kekw
+                currentBranch.branchID = chunks[^(i + 3)].Trim();
+                currentBranch.name = chunks[^(i + 2)].Trim();
+                currentBranch.liveBuild = chunks[^(i + 1)].Trim();
+                currentBranch.creationDate = entry;
+                config.Branches.Add(currentBranch);
+                //skip the next few because its not needed.
+                i += 5;
+            }
+        }
+
+        //TODO: scanning for the ApplicationID as the first string in a row might be better.
+        /// <summary>
+        /// Retrieve the builds of every branch.
+        /// </summary>
+        void GetBuilds()
+        {
+            var config = ConfigHost.ActiveConfig;
+            foreach(var branch in config.Branches)
+            {
+                //clear the list of builds.
+                branch.BuildsInBranch.Clear();
+                string rawData = CmdService.ExecuteDispatchCommand($"build list {config.applicationID} {branch.branchID}");
+                string[] chunks = rawData.Split('|');
+                //search the data.
+                for (int i = 1; i < chunks.Length;)
+                {
+                    string entry = chunks[^i].Trim();
+
+                    //skip empty entries
+                    if (string.IsNullOrWhiteSpace(entry) || string.IsNullOrEmpty(entry) || !entry.StartsWith("20"))
+                    {
+                        i++;
+                        continue;
+                    }
+                    //construct build from data.
+                    var build = new DispatchBuild();
+                    build.date = entry;
+                    build.creationBranch = chunks[^(i + 1)].Trim();
+                    build.buildStatus = chunks[^(i + 2)].Trim();
+                    build.buildID = chunks[^(i + 3)].Trim();
+                    //add build to branch data.
+                    branch.BuildsInBranch.Add(build);
+                    //skip ahead.
+                    i += 5;
+                }
+            }
         }
     }
 }

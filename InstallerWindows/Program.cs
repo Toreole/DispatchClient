@@ -117,7 +117,7 @@ namespace InstallerWindows
                 this.client = new WebClient();
 
                 //Start downloading the zip released from GitHub
-                client.DownloadFile("https://github.com/Toreole/DispatchClient/releases/download/v0.1.0/win64.zip", this.tempFilePath);
+                client.DownloadFile("https://github.com/Toreole/DispatchClient/releases/download/v0.1.1/win64.zip", this.tempFilePath);
                 OnDownloadComplete();
             }
             else
@@ -143,7 +143,7 @@ namespace InstallerWindows
             //Set the icon
             Registry.SetValue(@"HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\DispatchGUI", "Icon", $"\"{this.exePath}\", 1");
             //Define the command to run
-            Registry.SetValue(@"HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\DispatchGUI\command", "", $"\"{this.exePath}\" \"%1\"");
+            Registry.SetValue(@"HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\DispatchGUI\command", "", $"\"{this.exePath}\" \"%w\"");
 
             //Setup the .disgui file type and the connection with the installed program.
             //Define the filetype:
@@ -158,7 +158,7 @@ namespace InstallerWindows
 
             //Set the application to open the file
             //SetValue HKEY_CLASSES_ROOT\<FileTypeName>\shell\open\command Name:"" Value:"\"<pathToExe>\" \"%1\""
-            Registry.SetValue(@"HKEY_CLASSES_ROOT\disguiproj\shell\open\command", valueName: "", value: $"\"{this.exePath}\" \"%1\"");
+            Registry.SetValue(@"HKEY_CLASSES_ROOT\disguiproj\shell\open\command", valueName: "", value: $"\"{this.exePath}\" \"%0\"");
 
         }
     }

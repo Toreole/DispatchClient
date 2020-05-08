@@ -29,6 +29,8 @@ namespace DispatchGUI.Models
     {
         public string branchID;
         public string name;
+        public string creationDate;
+        public string liveBuild;
         public ObservableCollection<DispatchBuild> BuildsInBranch { get; set; }
 
         public string BranchNameID => $"{name}: {branchID}";
@@ -49,6 +51,8 @@ namespace DispatchGUI.Models
     {
         public string buildID;
         public string date;
+        public string buildStatus;
+        public string creationBranch;
 
         public string BuildDate => date;
         public string BuildID => buildID;

@@ -8,7 +8,7 @@
   <StackPanel Focusable="True" Name="Background">
     <!-- Hotkeys -->
     <Button Content="Refresh" IsVisible="False" Command="{Binding ForceRefresh}" HotKey="F5" />
-    <Button Content="Save" IsVisible="False" Command="{Binding Save}" HotKey="Ctrl+S" />
+    <Button Content="Save" IsVisible="True" Command="{Binding Save}" HotKey="Ctrl+S" />
     <!-- Data -->
     <Grid ColumnDefinitions="150,4*,1*" RowDefinitions="30,30,1*" Margin="10">
       <!-- The Application ID given to this App by Discord -->
@@ -24,7 +24,11 @@
       
      </Grid>
     <Separator BorderThickness="1" BorderBrush="Gray"></Separator>
-    <TextBlock Text="Branches in Project on Discord" Margin="2" />
+    <!-- Branches and Builds -->
+    <WrapPanel>
+      <TextBlock Text="Branches in Project on Discord" Margin="2" />
+      <Button Command="{Binding GetBranchesAndBuilds}" Content="Fetch Branch Data" IsEnabled="{Binding CanGetBranches}"/>
+    </WrapPanel>
     <!--<Button Command="{Binding GenerateBranches}" Content="Debug" />-->
     <!-- Tree View of all Branches and their Builds -->
     <TreeView Items="{Binding BranchList}">
