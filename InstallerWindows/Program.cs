@@ -23,10 +23,9 @@ namespace InstallerWindows
         }
 
         //"PLACEHOLDER_URL/RELEASE_FILE"
-        readonly Uri downloadUri = new Uri("https://github.com/Toreole/DispatchClient/releases/latest/app.zip");
+        readonly Uri downloadUri = new Uri("https://github.com/Toreole/DispatchClient/releases/latest/download/win64.zip");
         readonly string tempFile = "TEMP_DOWNLOAD.zip";
 
-        ProgressBar progressBar;
         WebClient client;
         string installationPath;
         string tempFilePath;
@@ -69,7 +68,7 @@ namespace InstallerWindows
             if(result == DialogResult.OK)
             {
                 DownloadDispatch(dispFolder.SelectedPath);
-                AddDispatchToPATH();
+                AddDispatchToPATH(dispFolder.SelectedPath);
                 dispFolder.Dispose();
                 Install();
             }
@@ -92,10 +91,10 @@ namespace InstallerWindows
             dispDownload.Dispose();
         }
 
-        void AddDispatchToPATH()
+        void AddDispatchToPATH(string installPath)
         {
             string pathVariable = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
-            pathVariable = $"{pathVariable};{dispatchExe};";
+            pathVariable = $"{pathVariable};{installPath};";
             Environment.SetEnvironmentVariable("Path", pathVariable, EnvironmentVariableTarget.User);
         }
 
@@ -116,27 +115,19 @@ namespace InstallerWindows
 
                 //Initialize the WebClient and the ProgressBar.
                 this.client = new WebClient();
-                this.progressBar = new ProgressBar();
-
-                //Update the progress of the download.
-                client.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) => { progressBar.Value = e.ProgressPercentage; };
-                progressBar.Name = "Downloading Latest Release from GitHub...";
-                
-                //Setup the next steps.
-                client.DownloadFileCompleted += OnDownloadComplete;
 
                 //Start downloading the zip released from GitHub
-                client.DownloadFileAsync(this.downloadUri, this.tempFilePath);
+                client.DownloadFile("https://github.com/Toreole/DispatchClient/releases/download/v0.1.0/win64.zip", this.tempFilePath);
+                OnDownloadComplete();
             }
             else
                 Console.WriteLine("Failed getting path.");
         }
 
         //The download is complete, go ahead with installing it.
-        void OnDownloadComplete(object sender, AsyncCompletedEventArgs e)
+        void OnDownloadComplete()
         {
             this.client.Dispose();
-            progressBar.Dispose();
             //Unzip the downloaded release into the installation path.
             ZipFile.ExtractToDirectory(this.tempFilePath, this.installationPath);
             this.exePath = Path.Combine(installationPath, "DispatchGUI.exe");
@@ -167,7 +158,7 @@ namespace InstallerWindows
 
             //Set the application to open the file
             //SetValue HKEY_CLASSES_ROOT\<FileTypeName>\shell\open\command Name:"" Value:"\"<pathToExe>\" \"%1\""
-            Registry.SetValue(@"HKEY_CLASSES_ROOT\disguiproj\shell\open\command", valueName: "", value: $"\"{this.exePath}\", \"%1\"");
+            Registry.SetValue(@"HKEY_CLASSES_ROOT\disguiproj\shell\open\command", valueName: "", value: $"\"{this.exePath}\" \"%1\"");
 
         }
     }

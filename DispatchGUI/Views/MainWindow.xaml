@@ -17,8 +17,12 @@
       <Setter Property="Foreground" Value="#ffffff"/>
     </Style>
   </Window.Styles>
+  <Panel>
+  <!-- HOT KEYS -->
+  <Button Content="Save" HotKey="Ctrl+S" Command="{Binding TestSave}" IsVisible="False"/>
   <!-- Set up different tabs -->
-    <TabControl>
+    <ToolTip></ToolTip>
+  <TabControl>
       <!-- "Main" Tab: controls -->
       <TabItem Header="Control" VerticalContentAlignment="Center">
         <DockPanel>
@@ -28,20 +32,20 @@
         </DockPanel>
       </TabItem>
       <!-- Console Tab: displays the output of the commands. -->
-      <TabItem Header="Output">
+    <TabItem Header="Output" ToolTip.Tip="Console output of the performed commands.">
         <TextBox
           Classes="Console"
           Padding="3"
           IsReadOnly="True"
           Text="{Binding ConsoleOutputText}" />
       </TabItem>
-      <TabItem Header="Project">
+      <TabItem Header="Project" DataContext="ConfigView">
         <!-- The Config of the project. -->
-        <views:ConfigView/>
+        <ContentControl Content="{Binding ConfigView}"></ContentControl>
       </TabItem>
       <TabItem Header="Dispatch Config">
         
       </TabItem>
     </TabControl>
-     
+  </Panel>
 </Window>

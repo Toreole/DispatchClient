@@ -9,17 +9,20 @@ using ReactiveUI;
 using System.Drawing;
 using DispatchGUI.Services;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using Avalonia.Controls;
 
 namespace DispatchGUI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        string workingDirectory;
-        string workingProjectFile;
-
         public ConfigViewModel ConfigView { get; private set; }
         public ReactiveCommand<Unit, Unit> GenerateConfigJson { get; }
 
+        public void TestSave()
+        {
+            Console.Write("Test");
+        }
 
         #region Constructors_Initialization
         public MainWindowViewModel()
@@ -32,34 +35,34 @@ namespace DispatchGUI.ViewModels
         //existing file, initialize.
         public MainWindowViewModel FromFile(string filePath)
         {
-            this.workingProjectFile = filePath;
-            this.workingDirectory = System.IO.Path.GetDirectoryName(filePath);
+            ConfigHost.workingProjectFile = filePath;
+            ConfigHost.workingDirectory = System.IO.Path.GetDirectoryName(filePath);
             ConfigHost.Reload(filePath);
             return this;
         }
         //only got the path: 1. search for file, if none found create new.
         public MainWindowViewModel FromDirectory(string path)
         {
-            this.workingDirectory = path;
-            this.workingProjectFile = ""; //mark empty to begin with.
+            ConfigHost.workingDirectory = path;
+            ConfigHost.workingProjectFile = ""; //mark empty to begin with.
 
             foreach(string file in Directory.GetFiles(path + "/"))
             {
                 if(file.EndsWith(".disgui")) //this is a disgui file.
                 {
-                    this.workingProjectFile = file;
+                    ConfigHost.workingProjectFile = file;
                     break;
                 }
             }
 
             //no file could be found, create a new one
-            if(string.IsNullOrEmpty(this.workingProjectFile))
+            if(string.IsNullOrEmpty(ConfigHost.workingProjectFile))
             {
-                this.workingProjectFile = ConfigHost.CreateNewIn(path);
+                ConfigHost.workingProjectFile = ConfigHost.CreateNewIn(path);
             } 
             else
             {
-                ConfigHost.Reload(this.workingProjectFile);
+                ConfigHost.Reload(ConfigHost.workingProjectFile);
             }
 
             return this;

@@ -8,6 +8,8 @@ namespace DispatchGUI.Services
     {
         public static ProjectConfig ActiveConfig { get; private set; }
 
+        public static string workingDirectory, workingProjectFile;
+
         /// <summary>
         /// Creates a new project file and returns the path.
         /// </summary>

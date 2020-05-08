@@ -3,9 +3,9 @@
 
 #ignore all the debug stuff
 /DispatchGUI/bin/
-/DispatchGUI/obj/Debug/
-
+/DispatchGUI/obj/
 /InstallerWindows/bin/
+/InstallerWindows/obj/
 /InstallerWindows/obj/Debug
 
 #ignore packages for now, regret it later
