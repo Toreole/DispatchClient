@@ -25,6 +25,7 @@ namespace DispatchGUI
                 {
                     foreach (string arg in commandArguments)
                     {
+                        //TODO: this doesnt correctly parse all the arguments.
                         if (!Path.IsPathRooted(arg)) //skip arguments that arent paths.
                             continue;
 #nullable enable

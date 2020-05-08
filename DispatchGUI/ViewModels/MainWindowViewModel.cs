@@ -29,7 +29,6 @@ namespace DispatchGUI.ViewModels
         {
             ConfigHost.Empty();
             ConfigView = new ConfigViewModel();
-            Run = ReactiveCommand.Create(() => { Task.Run(RunTestClient); });
         }
 
         //existing file, initialize.
@@ -81,41 +80,5 @@ namespace DispatchGUI.ViewModels
 
         public string ConsoleOutputText { get => outputText; set => this.RaiseAndSetIfChanged(ref outputText, value); } 
         private string outputText = "Hello";
-
-        //TODO: these commands should be run as >async< (Task.Run).
-        void RunTestClient()
-        {
-            //1. Check for / Setup file.
-            string path = Path.GetFullPath("command.bat");
-            if(!File.Exists(path))
-            {
-                FileStream stream = File.Create(path);
-                byte[] buffer = Encoding.UTF8.GetBytes("dispatch help");
-                stream.Write(buffer, 0, buffer.Length);
-                stream.Flush();
-                stream.Close();
-            }
-            //create the process.
-            Process process = new Process();
-            
-            ProcessStartInfo startInfo = new ProcessStartInfo(path, "");
-            startInfo.RedirectStandardOutput = true;
-            startInfo.UseShellExecute = false;
-            process.StartInfo = startInfo;
-            process.OutputDataReceived += (sender, args) => ConsoleOutputText += $"{args.Data}\n";
-            process.Start();
-            process.BeginOutputReadLine();
-            process.WaitForExit();
-
-            //CLEANER: this does not produce a temporary file!
-            //System.Diagnostics.Process process = new System.Diagnostics.Process();
-            //System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            //startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            //startInfo.FileName = "cmd.exe";
-            //                       /C indicates that the argument is a command which cmd will run and then close.
-            //startInfo.Arguments = "/C copy /b Image1.jpg + Archive.rar Image2.jpg";
-            //process.StartInfo = startInfo;
-            //process.Start();
-        }
     }
 }

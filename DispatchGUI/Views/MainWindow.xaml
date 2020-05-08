@@ -27,7 +27,7 @@
       <TabItem Header="Control" VerticalContentAlignment="Center">
         <DockPanel>
           <WrapPanel DockPanel.Dock="Top">
-            <Button Height="25" Width="100" Command="{Binding Run}">Run Help</Button>
+            <Button Height="25" Width="100">Useless Button</Button>
           </WrapPanel>
         </DockPanel>
       </TabItem>
